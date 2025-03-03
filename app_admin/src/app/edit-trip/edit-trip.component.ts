@@ -5,6 +5,8 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule }
 from "@angular/forms";
 import { TripDataService } from '../services/trip-data.service';
 import { Trip } from '../models/trip';
+import { AuthenticationService } from '../services/authentication.service'; // Import AuthenticationService
+
 
 @Component({
   selector: 'app-edit-trip',
@@ -24,7 +26,9 @@ export class EditTripComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private tripDataService: TripDataService
+    private tripDataService: TripDataService,
+    private authenticationService: AuthenticationService // Inject AuthenticationService
+
   ) {}
 
 ngOnInit() {
@@ -72,6 +76,7 @@ public onSubmit() {
   this.submitted = true;
   if(this.editForm.valid)
     {
+    console.log('Is logged in before updateTrip:', this.authenticationService.isLoggedIn()); // Add this line
     this.tripDataService.updateTrip(this.editForm.value)
     .subscribe({
       next: (value: any) => {
